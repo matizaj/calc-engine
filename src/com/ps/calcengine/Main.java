@@ -24,10 +24,10 @@ public class Main {
         System.out.println("Calc Engine v1");
 
         MathEquation[] equations = new MathEquation[4];
-        equations[0] = new MathEquation('a',100.0d, 50.0d);
-        equations[1] = new MathEquation('s', 125.0d, 25.0d);
-        equations[2] = new MathEquation('m', 130.0d, 10.0d);
-        equations[3] = new MathEquation('d', 50.0d, 15.0d);
+        equations[0] = new MathEquation(MathOperation.ADD,100.0d, 50.0d);
+        equations[1] = new MathEquation(MathOperation.SUBSTRACT, 125.0d, 25.0d);
+        equations[2] = new MathEquation(MathOperation.MULTIPLY, 130.0d, 10.0d);
+        equations[3] = new MathEquation(MathOperation.DIVIDE, 50.0d, 15.0d);
 
         for(MathEquation eq: equations) {
             eq.execute();
@@ -40,7 +40,7 @@ public class Main {
     }
 
     private static void useOverloads() {
-        MathEquation eqOverload = new MathEquation('d');
+        MathEquation eqOverload = new MathEquation(MathOperation.DIVIDE);
         double val1=9.0d;
         double val2=4.0d;
         eqOverload.execute(val1, val2);
@@ -66,13 +66,12 @@ public class Main {
     }
 
     private static void performOperations(String[] parts) {
-        char opCode = opCodeFromString(parts[0]);
+        MathOperation opCode = MathOperation.valueOf(parts[0].toUpperCase());
         double val1 = valueFromWord(parts[1]);
         double val2 = valueFromWord(parts[2]);
-
-        double result = execute(opCode, val1, val2);
-//        System.out.println(result);
-        displayResult(opCode, val1, val2, result);
+        MathEquation eq = new MathEquation(opCode, val1, val2);
+        eq.execute(val1, val2);
+        System.out.println(eq);
     }
 
     private static void displayResult(char opCode, double val1, double val2, double result) {
@@ -109,12 +108,17 @@ public class Main {
         "eight", "nine", "ten"};
 
         double value = 0d;
-
+        boolean isValueSet= false;
         for (int i = 0; i < wordList.length; i++) {
             if(word.equals(wordList[i])){
                 value=i;
+                isValueSet=true;
                 break;
             }
+        }
+
+        if(!isValueSet) {
+            value = Double.parseDouble(word);
         }
         return value;
     }

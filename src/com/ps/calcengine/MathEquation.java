@@ -1,9 +1,11 @@
 package com.ps.calcengine;
 
+import static com.ps.calcengine.MathOperation.*;
+
 public class MathEquation {
     double val1;
     double val2;
-    char opCode;
+    MathOperation opCode;
     double result;
 
     private static int numberOfCalculations;
@@ -14,11 +16,11 @@ public class MathEquation {
     }
 
     public MathEquation(){}
-    public MathEquation(char opCode) {
+    public MathEquation(MathOperation opCode) {
         this.opCode=opCode;
     }
 
-    public MathEquation(char opCode, double val1, double val2) {
+    public MathEquation(MathOperation opCode, double val1, double val2) {
         this(opCode);
         this.val1=val1;
         this.val2=val2;
@@ -26,35 +28,24 @@ public class MathEquation {
 
     @Override
     public String toString() {
-        char symbol = symbolFromOpCode(opCode);
+        char symbol = opCode.getSymbol();
         StringBuilder sb = new StringBuilder();
         sb.append(val1).append(symbol).append(val2).append(" = ").append(result);
         return sb.toString();
     }
-    public char symbolFromOpCode(char opCode) {
-        char[] opCodes = {'a', 's', 'm', 'd'};
-        char[] symbols = {'+', '-', '*', '/'};
-        char symbol=' ';
-        for (int i =0; i<opCodes.length; i++) {
-            if(opCode == opCodes[i]){
-                symbol = symbols[i];
-            }
-        }
-        return symbol;
-    }
 
     void execute() {
         switch (opCode) {
-            case 'a':
+            case ADD:
                 result= val1 + val2;
                 break;
-            case 's':
+            case SUBSTRACT:
                 result= val1 - val2;
                 break;
-            case 'm':
+            case MULTIPLY:
                 result= val1 * val2;
                 break;
-            case 'd':
+            case DIVIDE:
                 result= val2 != 0 ? val1 / val2 : 0.0d;
                 break;
         }
