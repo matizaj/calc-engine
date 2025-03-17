@@ -12,7 +12,7 @@ public class Main {
         if (args.length == 0) {
             performCalculation();
         } else if (args.length == 3) {
-            handleCommandArgs(args);
+            performOperations(args);
         } else if (Objects.equals(args[0], "interactive")) {
             executeInteractively();
         }else {
@@ -47,16 +47,6 @@ public class Main {
         System.out.println("Equation overload result: " + eqOverload.result);
     }
 
-
-    private static void handleCommandArgs(String[] args) {
-        char opCode = args[0].charAt(0);
-        double val1 = Double.parseDouble(args[1]);
-        double val2 = Double.parseDouble(args[2]);
-
-        double res = execute(opCode, val1, val2);
-        System.out.println(res);
-    }
-
     static void executeInteractively() {
         System.out.println("enter a operation and two numbers");
         Scanner scanner = new Scanner(System.in);
@@ -72,35 +62,6 @@ public class Main {
         MathEquation eq = new MathEquation(opCode, val1, val2);
         eq.execute(val1, val2);
         System.out.println(eq);
-    }
-
-    private static void displayResult(char opCode, double val1, double val2, double result) {
-        char symbol = symbolFromOpCode(opCode);
-        StringBuilder sb = new StringBuilder();
-        sb.append(val1).append(symbol).append(val2).append(" = ").append(result);
-        System.out.println(sb.toString());
-    }
-
-    public static char symbolFromOpCode(char opCode) {
-        char[] opCodes = {'a', 's', 'm', 'd'};
-        char[] symbols = {'+', '-', '*', '/'};
-        char symbol=' ';
-        for (int i =0; i<opCodes.length; i++) {
-            if(opCode == opCodes[i]){
-                symbol = symbols[i];
-            }
-        }
-        return symbol;
-    }
-
-    public static double execute(char opCode, double val1, double val2) {
-        double result = 0;
-
-        return result;
-    }
-
-    static char opCodeFromString(String operationName) {
-        return operationName.charAt(0);
     }
 
     static double valueFromWord(String word) {
