@@ -31,18 +31,21 @@ public class Main {
 
         for(MathEquation eq: equations) {
             eq.execute();
-            System.out.println(eq.result);
+            System.out.println(eq);
         }
         System.out.println("Average: " + getAverageResult());
 
+        // useOverloads();
+
+    }
+
+    private static void useOverloads() {
         MathEquation eqOverload = new MathEquation('d');
         double val1=9.0d;
         double val2=4.0d;
         eqOverload.execute(val1, val2);
         System.out.println("Equation overload result: " + eqOverload.result);
-
     }
-
 
 
     private static void handleCommandArgs(String[] args) {
@@ -79,7 +82,7 @@ public class Main {
         System.out.println(sb.toString());
     }
 
-    private static char symbolFromOpCode(char opCode) {
+    public static char symbolFromOpCode(char opCode) {
         char[] opCodes = {'a', 's', 'm', 'd'};
         char[] symbols = {'+', '-', '*', '/'};
         char symbol=' ';
@@ -89,8 +92,6 @@ public class Main {
             }
         }
         return symbol;
-
-
     }
 
     public static double execute(char opCode, double val1, double val2) {

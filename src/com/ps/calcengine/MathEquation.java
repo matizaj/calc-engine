@@ -24,6 +24,25 @@ public class MathEquation {
         this.val2=val2;
     }
 
+    @Override
+    public String toString() {
+        char symbol = symbolFromOpCode(opCode);
+        StringBuilder sb = new StringBuilder();
+        sb.append(val1).append(symbol).append(val2).append(" = ").append(result);
+        return sb.toString();
+    }
+    public char symbolFromOpCode(char opCode) {
+        char[] opCodes = {'a', 's', 'm', 'd'};
+        char[] symbols = {'+', '-', '*', '/'};
+        char symbol=' ';
+        for (int i =0; i<opCodes.length; i++) {
+            if(opCode == opCodes[i]){
+                symbol = symbols[i];
+            }
+        }
+        return symbol;
+    }
+
     void execute() {
         switch (opCode) {
             case 'a':
