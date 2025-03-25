@@ -1,0 +1,4 @@
+add 4 four
+substract eight two
+multiply 10 10
+divide 60 1o

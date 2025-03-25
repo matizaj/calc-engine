@@ -1,5 +1,7 @@
 package com.ps.calcengine;
 
+import java.util.List;
+
 import static com.ps.calcengine.MathOperation.*;
 
 public class MathEquation {
@@ -34,6 +36,8 @@ public class MathEquation {
         return sb.toString();
     }
 
+
+
     void execute() {
         switch (opCode) {
             case ADD:
@@ -46,7 +50,9 @@ public class MathEquation {
                 result= val1 * val2;
                 break;
             case DIVIDE:
-                result= val2 != 0 ? val1 / val2 : 0.0d;
+                if (val2 ==0 )
+                    throw new ArithmeticException();
+                result= val1 / val2;
                 break;
         }
 

@@ -1,6 +1,11 @@
 package com.ps.calcengine;
 
 
+import com.ps.calcengine.exceptions.InvalidStatementException;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -8,15 +13,30 @@ import static com.ps.calcengine.MathEquation.*;
 
 public class Main {
     public static void  main(String[] args) {
+        try(var reader = new BufferedReader(new FileReader(args[0]));) {
+            processFile(reader);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            if(ex.getCause() != null) {
+                System.out.println("Caused by "+ ex.getCause());
+            }
+        }
+//
+//        if (args.length == 0) {
+//            performCalculation();
+//        } else if (args.length == 3) {
+//            performOperations(args);
+//        } else if (Objects.equals(args[0], "interactive")) {
+//            executeInteractively();
+//        }else {
+//            System.out.println("Wrong number of cmd line args");
+//        }
+    }
 
-        if (args.length == 0) {
-            performCalculation();
-        } else if (args.length == 3) {
-            performOperations(args);
-        } else if (Objects.equals(args[0], "interactive")) {
-            executeInteractively();
-        }else {
-            System.out.println("Wrong number of cmd line args");
+    private static void  processFile(BufferedReader reader) throws IOException, InvalidStatementException {
+        String inputLine = null;
+        while((inputLine = reader.readLine()) != null) {
+            performOperations(inputLine);
         }
     }
 
@@ -52,16 +72,25 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String usrInput = scanner.nextLine();
         String[] parts = usrInput.split(" ");
-        performOperations(parts);
+        //performOperations(parts);
     }
 
-    private static void performOperations(String[] parts) {
-        MathOperation opCode = MathOperation.valueOf(parts[0].toUpperCase());
-        double val1 = valueFromWord(parts[1]);
-        double val2 = valueFromWord(parts[2]);
-        MathEquation eq = new MathEquation(opCode, val1, val2);
-        eq.execute(val1, val2);
-        System.out.println(eq);
+    private static void performOperations(String inputLine) throws InvalidStatementException {
+        try {
+            String[] parts = inputLine.split(" ");
+            if (parts.length != 3)
+                throw new InvalidStatementException("Statement must have 3 parts");
+            MathOperation opCode = MathOperation.valueOf(parts[0].toUpperCase());
+            double val1 = valueFromWord(parts[1]);
+            double val2 = valueFromWord(parts[2]);
+            MathEquation eq = new MathEquation(opCode, val1, val2);
+            eq.execute(val1, val2);
+            System.out.println(eq);
+        }catch (InvalidStatementException iex) {
+            throw iex;
+        } catch (Exception ex ) {
+            throw new InvalidStatementException("Error processing statement", ex);
+        }
     }
 
     static double valueFromWord(String word) {
